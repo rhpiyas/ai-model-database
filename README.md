@@ -12,6 +12,7 @@ ai-model-database/
 │   └── index.js
 │
 ├── backend/
+    ├── data/
 │   ├── app.js
 │   └── helper.js
 │
