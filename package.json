@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "diu-jsonstore": "github:labnann/diu-jsonstore"
+  }
+}

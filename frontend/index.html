@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Model Database</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 class="title">AI Model Database</h1>
+    <hr>
+
+    <form action="http://127.0.0.1:3000/create" method="POST">
+
+        <p>
+            <label>Model ID : </label>
+            <input type="text" name="modelId">
+        </p>
+
+        <p>
+            <label>Model Name : </label>
+            <input type="text" name="modelName">
+        </p>
+
+        <p>
+            <label>Developer : </label>
+            <input type="text" name="developer">
+        </p>
+
+        <p>
+            <label>Release Year : </label>
+            <input type="text" name="releaseYear">
+        </p>
+
+        <button type="submit">Save Model</button>
+
+    </form>
+
+    <br>
+
+    <h2 style="text-align: center;">
+        Search AI MODEL
+    </h2><hr>
+    <br>
+
+    <input type="text" id="searchModel" placeholder="Enter AI Model ID">
+    <button id="searchBtn">Search</button>
+
+    <h2 style="text-align: center;">Search Result</h2>
+    <hr> <br>
+
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+
+        <tr>
+            <td>Model ID</td>
+            <td id="model-id"></td>
+        </tr>
+
+        <tr>
+            <td>Model Name</td>
+            <td id="model-name"></td>
+        </tr>
+
+        <tr>
+            <td>Developer</td>
+            <td id="model-developer"></td>
+        </tr>
+
+        <tr>
+            <td>Release Year</td>
+            <td id="model-release-year"></td>
+        </tr>
+
+    </table>
+
+    <script src="index.js"></script>
+
+</body>
+</html>

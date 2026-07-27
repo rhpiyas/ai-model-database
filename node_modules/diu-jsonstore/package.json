@@ -1,0 +1,14 @@
+{
+  "name": "diu-jsonstore",
+  "version": "1.0.0",
+  "description": "A tiny JSON based NoSQL database.",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "json",
+    "database",
+    "storage",
+    "nosql",
+    "diu"
+  ]
+}
