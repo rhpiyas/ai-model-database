@@ -1,0 +1,26 @@
+[
+  {
+    "modelId": "101",
+    "modelName": "ChatGPT",
+    "developer": "OpenAI",
+    "releaseYear": "2020"
+  },
+  {
+    "modelId": "102",
+    "modelName": "Gemini",
+    "developer": "Google",
+    "releaseYear": "2023"
+  },
+  {
+    "modelId": "103",
+    "modelName": "Claude",
+    "developer": "Anthropic",
+    "releaseYear": "2023"
+  },
+  {
+    "modelId": "104",
+    "modelName": "Llama 3",
+    "developer": "Meta AI",
+    "releaseYear": "2024"
+  }
+]

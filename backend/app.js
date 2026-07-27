@@ -1,6 +1,61 @@
 const http = require("http");
+const fs = require("fs");
+const path = require("path");
 const parser = require("querystring");
 const helper = require("./helper.js");
+
+const dataFilePath = path.join(__dirname, "data", "models.json");
+
+const defaultModels = [
+  {
+    modelId: "101",
+    modelName: "ChatGPT",
+    developer: "OpenAI",
+    releaseYear: "2020"
+  },
+  {
+    modelId: "102",
+    modelName: "Gemini",
+    developer: "Google",
+    releaseYear: "2023"
+  },
+  {
+    modelId: "103",
+    modelName: "Claude",
+    developer: "Anthropic",
+    releaseYear: "2023"
+  }
+];
+
+function loadModels() {
+  try {
+    if (!fs.existsSync(dataFilePath)) {
+      fs.mkdirSync(path.dirname(dataFilePath), { recursive: true });
+      fs.writeFileSync(dataFilePath, JSON.stringify(defaultModels, null, 2));
+      return [...defaultModels];
+    }
+
+    const fileContent = fs.readFileSync(dataFilePath, "utf8");
+    const parsedModels = JSON.parse(fileContent);
+
+    if (!Array.isArray(parsedModels)) {
+      throw new Error("Invalid data format");
+    }
+
+    return parsedModels;
+  } catch (error) {
+    fs.mkdirSync(path.dirname(dataFilePath), { recursive: true });
+    fs.writeFileSync(dataFilePath, JSON.stringify(defaultModels, null, 2));
+    return [...defaultModels];
+  }
+}
+
+function saveModels(models) {
+  fs.mkdirSync(path.dirname(dataFilePath), { recursive: true });
+  fs.writeFileSync(dataFilePath, JSON.stringify(models, null, 2));
+}
+
+let models = loadModels();
 
 function handle(req, res) {
   console.log(req.method, req.url);
@@ -14,6 +69,17 @@ function handle(req, res) {
       const formData = parser.parse(body);
       console.log(formData);
 
+      const record = {
+        modelId: String(formData.modelId ?? "").trim(),
+        modelName: String(formData.modelName ?? "").trim(),
+        developer: String(formData.developer ?? "").trim(),
+        releaseYear: String(formData.releaseYear ?? "").trim(),
+      };
+
+      models = models.filter((item) => item.modelId !== record.modelId);
+      models.push(record);
+      saveModels(models);
+
       const escapeHtml = (value) => String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -22,10 +88,10 @@ function handle(req, res) {
         .replace(/'/g, "&#39;");
 
       const rows = [
-        ["Model ID", formData.modelId],
-        ["Model Name", formData.modelName],
-        ["Developer", formData.developer],
-        ["Release Year", formData.releaseYear],
+        ["Model ID", record.modelId],
+        ["Model Name", record.modelName],
+        ["Developer", record.developer],
+        ["Release Year", record.releaseYear],
       ]
         .map(
           ([label, value]) => `
@@ -233,7 +299,7 @@ function handle(req, res) {
 
               <div class="actions">
                 <a class="button" href="http://127.0.0.1:5500/frontend/index.html">Back to Form</a>
-                <a class="button secondary" href="http://localhost:3000/read/101">Try Search API</a>
+                <a class="button secondary" href="http://localhost:3000/read/${encodeURIComponent(record.modelId)}">Try Search API</a>
               </div>
             </section>
           </main>
@@ -245,31 +311,10 @@ function handle(req, res) {
     return;
   }
 
-  const data = [
-    {
-      modelId: "101",
-      modelName: "ChatGPT",
-      developer: "OpenAI",
-      releaseYear: "2020"
-    },
-    {
-      modelId: "102",
-      modelName: "Gemini",
-      developer: "Google",
-      releaseYear: "2023"
-    },
-    {
-      modelId: "103",
-      modelName: "Claude",
-      developer: "Anthropic",
-      releaseYear: "2023"
-    }
-  ];
-
   const id = req.url.split("/")[2];
   
   if (req.method === "GET" && req.url.startsWith("/read/")) {
-    const record = data.find((item) => item.modelId === id);
+    const record = models.find((item) => item.modelId === id);
 
     if (record) {
       helper.endResponseWithJSON(res, record, 200);
