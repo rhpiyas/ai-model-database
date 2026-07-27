@@ -24,6 +24,12 @@ h2 {
     letter-spacing: 0.04em;
 }
 
+.section-title {
+    width: min(720px, 100%);
+    margin: 0 auto;
+    display: block;
+}
+
 .title {
     margin: 0 0 18px;
     font-size: clamp(2rem, 4vw, 3.25rem);
